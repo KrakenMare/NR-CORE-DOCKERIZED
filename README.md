@@ -1,54 +1,66 @@
-# NR-CORE
+# NR-CORE - Dockerized
 
-NR-CORE is a Realm of the Mad God private server. It represents the continuation of the test source used to run Nilly's Realm and is an attempt to bring the broader rotmg private server community together so that we may take a little more enjoyment out of a game that we've all come to love.
+This is a fork of nillys nr-core, with an updated Docker setup. While nr-core has some docker files, it's of a much older version and is more focused around building. We're going to be using this more for easy Development on windows.
 
-Note that this source is very much a WIP. Nothing is guaranteed to work.
+NR-Core can be found here: https://github.com/cp-nilly/NR-CORE
 
-## Getting Started
-The server consists of two primary components, the app engine (server) and the world server (wServer). The app engine is used to handle http get and post requests while the world server is used to run the game world. The source, as a whole, uses [redis](https://redis.io/) for data persistence. The RemoteLogger is optionally run on the server to provide a means of saving logging information.
+# Requirements
+- Docker For Windows - https://docs.docker.com/desktop/windows/install/
 
-To interact with the server you'll need a client capable of doing so. A client is currently being worked on for this source. You may find it [here](https://github.com/cp-nilly/NR-27.7.X13). 
+# Features
+	- Automatically restarts on a crash.
+	- Reviewable logs. (Base sources exit before you can even see the log)
+	- No need to install database.
+	- No, "it works on my machine".
+	- Easy to tweak and secure this docker-compose.yml for production.
+	- Easy to integrate into a CI/CD pipeline.
+	
+# Commands
 
-As a push to get prospective private server owners to add some variety to their server, assets (resources) have been removed from this repository. You'll need to provide the server and wServer with these resources before they will run. A basic compilation of these resources can be found [here](https://nillysrealm.com/topic/19811/nr-core-resource-pack).
+All commands should be ran from the NR-Core/ directory. It should be at the same file as the Dockerfiles.
 
-Once you you have redis configured and running, you're able to build the source, and you've downloaded a basic set of resources, you'll need to make sure the server.json and wServer.json is configured properly. Most importantly is that you configure where your resources are located (resourceFolder). After that initial configuration, you can start having fun customizing your server as you see fit.
+## Starting
+This will start all three containers detached.
+`docker-compose up -d`. 
 
-## Behaviors
-Behaviors have been removed from the source as they are closely tied to the server assets. To add behaviors to your source, you either need to create the necessary files or get them from somewhere and place them in **wServer/logic/db**. You'll have to create the db folder as it likely will not exist initially. Once placed in the db folder, close the project in your ide and open it. At that point, all the added behaviors should present themselves.
+## Rebuilding & Restarting
+`docker-compose up -d --rebuild``
 
-Some behaviors have been included in the resource compilation linked in the getting started section. They should give you an idea of how the behavior system works and what you'll need to do to add new ones.
+## Stopping
+`docker-compose stop`
 
-## Configuring the Initial Admin
-Currently, the first admin on the server will need to be manually configured via the database. After that, given that the first admin is of rank 100, that admin can rank other players. The [dbschema.txt](https://github.com/cp-nilly/NR-CORE/blob/master/common/dbSchema.txt) outlines the structure of the database data. The keys that need to be changed is the admin and rank fields of the account you want to give admin to.
+## Checking Logs
+The easiest way to do this on Windows is to use to the Docker Desktop GUI installed automatically when using Docker on Windows. Run the GUI and you will see your containers. 
+[Imgur](https://imgur.com/se6OKDf)
 
-An example of manually ranking a player via redis-cli (the default client supplied with redis):
-```
-127.0.0.1:6379> hget names NILLY
-"5"
-127.0.0.1:6379> hset account.5 admin 1
-(integer) 0
-127.0.0.1:6379> hset account.5 rank 100
-(integer) 0
-127.0.0.1:6379>
-```
+## Accessing the redis-cli
+1) Enter into the container to run bash scripts
+`docker exec -it nr-core_redis_1 sh`
+2) Connect to the redis-cli
+`redis-cli -h redis`
+3) Authenticate
+`auth mypassword`
 
-## Getting Additional Help
-If you need additional help regarding this source, think about joining the NR community.
 
-* Forum: https://nillysrealm.com/category/20/nr-core-testing
-* Discord: https://discord.gg/hmMTQWk
 
-## Pioneering Credits
-The following list of individuals each played a special role in making this source what it is today. Aside from creepylava, they've all worked on the nr test source at one point or another.
+# Windows
+	- Install Docker for Windows, which also installs Compose. 
+	- server.json and wServer.json are bound to 0.0.0.0 - this is due to a bug in Docker concerning local loopback.
+	- In the same vein, you'll notice the redis config is bound to `redis`. This is an interface we create in the compose to circumvent the same loopback issue.
 
-- [creepylava](https://github.com/creepylava) - Created the original source this work is based off of. Without him, this would not exist.
-- [cp-nilly](https://github.com/cp-nilly)
-- [tuvior](https://github.com/tuvior)
-- [ossimc82](https://github.com/ossimc82)
-- [TheSnowQueen](https://github.com/TheSnowQueen)
-- [Cyeclops](https://github.com/Cyeclops)
-- [Varanus-Komodoensis](https://github.com/Varanus-Komodoensis)
-- [Moloch-horridus](https://github.com/Moloch-horridus)
+# To Know
+	- Redis is persistent after container restarts and rebuilt. The saving is a basic 60s save, and disables appendonly. In prod, you prob want appendonly on, with better saving - but I want to use less space on this laptop as appendonly uses more, and it's just for dev.
+	- Fixed a minor log4net bug where RED/YELLOW isn't supported on Unix setups and throws nasty errors.
+	- To support windows and odd networking setups, the network-mode is host. This will bind the services to your IP ports, and if you do not have a firewall/all ports are forwarded this means they are exposed to the internet.
 
-## Thanks to the NR community
-A special thanks goes out to the NR community for making the Nilly's Realm test server as successful as it has been. They were, and always have been, the driving force that allowed this project to survive as long as it has.
+# Credit
+	- Nillys & Original Credits to the NR-Core team. (https://github.com/cp-nilly/NR-CORE)
+	- creepylava - Created the original source this work is based off of. Without him, this would not exist.
+	- cp-nilly
+	- tuvior
+	- ossimc82
+	- TheSnowQueen
+	- Cyeclops
+	- Varanus-Komodoensis
+	- Moloch-horridus
+	- Zolmex (resources for nr-core, and dungeon gen)
