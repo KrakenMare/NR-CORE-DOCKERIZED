@@ -12,7 +12,7 @@ NR-Core can be found here: https://github.com/cp-nilly/NR-CORE
 	- Reviewable logs. (Base sources exit before you can even see the log)
 	- No need to install database.
 	- No, "it works on my machine".
-	- Easy to tweak and secure this docker-compose.yml for production.
+	- Easy to tweak and secure this docker-compose.yml for playing with others.
 	- Easy to integrate into a CI/CD pipeline.
 	
 # Commands
@@ -24,7 +24,7 @@ This will start all three containers detached.
 `docker-compose up -d`. 
 
 ## Rebuilding & Restarting
-`docker-compose up -d --rebuild``
+`docker-compose up -d --rebuild`
 
 ## Stopping
 `docker-compose stop`
