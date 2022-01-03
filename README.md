@@ -17,7 +17,7 @@ NR-Core can be found here: https://github.com/cp-nilly/NR-CORE
 	
 # Commands
 
-All commands should be ran from the NR-Core/ directory. It should be at the same file as the Dockerfiles.
+All commands should be ran from the NR-Core/ directory. It should be at the same level as the Dockerfiles.
 
 ## Starting
 This will start all three containers detached.
