@@ -52,6 +52,7 @@ The easiest way to do this on Windows is to use to the Docker Desktop GUI instal
 	- Redis is persistent after container restarts and rebuilt. The saving is a basic 60s save, and disables appendonly. In prod, you prob want appendonly on, with better saving - but I want to use less space on this laptop as appendonly uses more, and it's just for dev.
 	- Fixed a minor log4net bug where RED/YELLOW isn't supported on Unix setups and throws nasty errors.
 	- To support windows and odd networking setups, the network-mode is host. This will bind the services to your IP ports, and if you do not have a firewall/all ports are forwarded this means they are exposed to the internet.
+	- Default password for redis is `mypassword`. Even in development, I just prefer to run it with a password. :shrug:
 
 # Credit
 	- Nillys & Original Credits to the NR-Core team. (https://github.com/cp-nilly/NR-CORE)
