@@ -44,6 +44,7 @@ The easiest way to do this on Windows is to use to the Docker Desktop GUI instal
 
 
 # Windows
+	- Docker on Windows need certain config changes in order to bind properly. Replace your built bin/ wServer.json and Server.json with the IP changes in the `docker-build-configs/`
 	- Install Docker for Windows, which also installs Compose. 
 	- server.json and wServer.json are bound to 0.0.0.0 - this is due to a bug in Docker concerning local loopback.
 	- In the same vein, you'll notice the redis config is bound to `redis`. This is an interface we create in the compose to circumvent the same loopback issue.

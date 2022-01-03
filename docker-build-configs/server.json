@@ -1,0 +1,19 @@
+{
+  "dbInfo": {
+    "host": "redis",
+    "port": "6379",
+    "auth": "mypassword",
+    "index": "0"
+  },
+  "serverInfo": {
+    "type": "Account",
+    "name": "AppEngine",
+    "bindAddress":  "*", // enter * to bind to all network connections
+    "port": "8080"
+  },
+  "serverSettings": {
+    "logFolder": "./logs",
+    "resourceFolder":  "./resources",
+    "sendGridApiKey": ""
+  }
+}
